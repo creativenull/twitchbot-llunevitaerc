@@ -1,0 +1,42 @@
+{
+  "name": "twitchbot-llunevitaerc",
+  "version": "1.0.0",
+  "description": "A twitch bot",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "lint": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/creativenull/twitchbot-llunevitaerc.git"
+  },
+  "keywords": [
+    "bot",
+    "twitch",
+    "mine",
+    "js"
+  ],
+  "author": "Arnold Chand <creativenull@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/creativenull/twitchbot-llunevitaerc/issues"
+  },
+  "homepage": "https://github.com/creativenull/twitchbot-llunevitaerc#readme",
+  "devDependencies": {
+    "@types/koa": "^2.13.1",
+    "@types/node-fetch": "^2.5.8",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "isomorphic-unfetch": "^3.1.0",
+    "koa": "^2.13.1",
+    "node-fetch": "^2.6.1",
+    "node-persist": "^3.1.0"
+  }
+}
