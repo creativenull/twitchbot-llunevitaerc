@@ -6,7 +6,7 @@ bot:
 		--allow-env \
 		--allow-net \
 		--unstable \
-		src/commands/bot.ts
+		src/bot.ts
 
 migrate-users: src/database/db.sqlite src/database/db.sqlite-journal
 	deno run \

@@ -6,7 +6,7 @@ const db = new DB(env.DATABASE_NAME);
 
 db.query(`
   CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id       INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL
   );
 `);
