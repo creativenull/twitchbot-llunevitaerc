@@ -8,10 +8,10 @@ export function allUsers(): string[] {
   const usernames: string[] = [];
 
   try {
-    const results = db.query(`SELECT * FROM users;`);
+    const query = db.prepareQuery<[string]>(`SELECT username FROM users;`);
 
-    for (const [unames] of results) {
-      usernames.push(unames as string);
+    for (const [username] of query.iter()) {
+      usernames.push(username);
     }
 
     return usernames;
