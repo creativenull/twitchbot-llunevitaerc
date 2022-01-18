@@ -5,9 +5,9 @@ const env = config({ safe: true });
 
 export function allQuestions(): [string, string][] {
   const db = new DB(env.DATABASE_NAME);
-  const questions: [string, string][] = [];
 
   try {
+    const questions: [string, string][] = [];
     const query = db.prepareQuery<[string, string]>(
       "SELECT questions.question, users.username FROM questions JOIN users ON questions.user_id = users.id;",
     );
@@ -15,6 +15,8 @@ export function allQuestions(): [string, string][] {
     for (const [question, username] of query.iter()) {
       questions.push([question, username]);
     }
+
+    query.finalize();
 
     return questions;
   } catch (e) {
