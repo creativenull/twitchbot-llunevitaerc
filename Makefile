@@ -10,8 +10,8 @@ bot:
 
 server:
 	deno run \
-		--allow-read=.env,.env.example,.env.defaults,src/database/db.sqlite,src/database/db.sqlite-journal \
-		--allow-write=src/database/db.sqlite,src/database/db.sqlite-journal \
+		--allow-read=.env,.env.example,.env.defaults,src/database/db.sqlite,src/database/db.sqlite-journal,src/utils/logs \
+		--allow-write=src/database/db.sqlite,src/database/db.sqlite-journal,src/utils/logs \
 		--allow-env \
 		--allow-net \
 		--watch \
