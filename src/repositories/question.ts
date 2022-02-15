@@ -1,27 +1,11 @@
-import { config } from "https://deno.land/x/dotenv@v3.1.0/mod.ts";
-import { DB } from "https://deno.land/x/sqlite@v3.2.0/mod.ts";
+import { db } from "../db.ts"
 
-const env = config({ safe: true });
+// cache the query globally so it's kept between calls
+const query = db.prepareQuery<[string, string]>(
+    "SELECT questions.question, users.username FROM questions \
+JOIN users ON questions.user_id = users.id;",
+);
 
 export function allQuestions(): [string, string][] {
-  const db = new DB(env.DATABASE_NAME);
-
-  try {
-    const questions: [string, string][] = [];
-    const query = db.prepareQuery<[string, string]>(
-      "SELECT questions.question, users.username FROM questions JOIN users ON questions.user_id = users.id;",
-    );
-
-    for (const [question, username] of query.iter()) {
-      questions.push([question, username]);
-    }
-
-    query.finalize();
-
-    return questions;
-  } catch (e) {
-    throw e;
-  } finally {
-    db.close();
-  }
+  return query.all();
 }
