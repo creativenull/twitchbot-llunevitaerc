@@ -1,24 +1,35 @@
-import { Application, Router } from "https://deno.land/x/oak@v10.1.0/mod.ts";
-import { allQuestions } from "./repositories/question.ts";
+import {
+  Application,
+  isHttpError,
+  Status,
+} from "https://deno.land/x/oak@v10.1.0/mod.ts";
+import router from "./routes.ts";
 
 const port = 8000;
 const app = new Application();
-const router = new Router();
-
-router.get("/", (ctx) => {
-  ctx.response.body = { data: "hello world" };
-});
-
-router.get("/questions", (ctx) => {
-  const questions = allQuestions();
-  ctx.response.body = { data: questions }
-});
-
 app.use(router.routes());
 
-// app.use((ctx) => {
-//   ctx.response.body = "Hello World!";
-// });
+app.use(async (ctx, next) => {
+  try {
+    await next();
+  } catch (err) {
+    if (isHttpError(err)) {
+      switch (err.status) {
+        case Status.NotFound:
+          return { data: "not found" };
+        default:
+          return { data: "not found by default" };
+      }
+    } else {
+      // rethrow if you can't handle the error
+      throw err;
+    }
+  }
+});
+
+app.use((ctx) => {
+  ctx.throw(404);
+});
 
 app.addEventListener("listen", () => {
   console.log(`[SERVER] Listening on port: ${port}`);
