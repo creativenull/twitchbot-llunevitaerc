@@ -1,14 +1,17 @@
-import { client } from "./chatbot/client.ts";
+import { client, env } from "./chatbot/client.ts";
 import { onMessageHandler } from "./chatbot/message-handler.ts";
-import { onRaidHandler } from "./chatbot/raid-handler.ts";
-import { onPingHandler } from "./chatbot/ping-handler.ts";
 
-client.on("message", onMessageHandler);
-client.on("raided", onRaidHandler);
-client.on("ping", onPingHandler);
+try {
+  await client.connect();
 
-client.on("connected", (addr: string, port: number) => {
-  console.log(`* Connected to ${addr}:${port}`);
-});
+  const channel = client.joinChannel(env.CHANNEL_NAME);
+  channel.addEventListener("privmsg", (ctx) => {
+    onMessageHandler(channel, ctx);
+  });
 
-client.connect();
+  channel.addEventListener("join", () => {
+    console.log(`* Connected to ${env.CHANNEL_NAME}`);
+  });
+} catch (e) {
+  client.disconnect();
+}
