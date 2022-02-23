@@ -1,32 +1,33 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
+import DefaultLayout from "./layouts/DefaultLayout.vue";
+import AppSidebar from "./components/AppSidebar.vue";
 </script>
 
 <template>
-  <div class="w-full">
-    <div class="flex">
-      <div class="sidebar p-2">
-        <ul>
-          <li>Show questions</li>
-          <li>Commands</li>
-          <li>Timer Commands</li>
-          <li>Add a Command</li>
-        </ul>
-      </div>
+  <DefaultLayout>
+    <template #sidebar>
+      <AppSidebar />
+    </template>
 
-      <div class="main p-2">
-        <RouterView />
-      </div>
-    </div>
-  </div>
+    <template #default>
+      <RouterView v-slot="{ Component }">
+        <Transition name="fade" mode="out-in" appear>
+          <component :is="Component" />
+        </Transition>
+      </RouterView>
+    </template>
+  </DefaultLayout>
 </template>
 
-<style>
-.sidebar {
-  width: 20%;
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
 }
 
-.main {
-  width: 80%;
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
