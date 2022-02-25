@@ -8,10 +8,10 @@ const sidebarRoutes = [
     text: "Commands",
     to: "/commands/all",
   },
-  {
-    text: "Timers Commands",
-    to: "/commands/timers",
-  },
+  // {
+  //   text: "Timers Commands",
+  //   to: "/commands/timers",
+  // },
   {
     text: "Add a Command",
     to: "/commands/add",
