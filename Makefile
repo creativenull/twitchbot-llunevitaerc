@@ -32,6 +32,14 @@ migrate-questions: src/database/db.sqlite src/database/db.sqlite-journal
 		src/database/migrations/questions.ts
 	@echo "Question Migration Done!"
 
+migrate-commands: src/database/db.sqlite src/database/db.sqlite-journal
+	deno run \
+		--allow-read=.env,.env.example,.env.defaults,src/database/db.sqlite,src/database/db.sqlite-journal \
+		--allow-write=src/database/db.sqlite,src/database/db.sqlite-journal \
+		--allow-env \
+		src/database/migrations/commands.ts
+	@echo "Commands Migration Done!"
+
 src/database/db.sqlite:
 	touch src/database/db.sqlite
 
