@@ -15,7 +15,7 @@ function createCommand() {
   <div class="flex flex-col space-y-5">
     <h1 class="text-5xl">Add Command</h1>
     <div>
-      <form ref="form" @sumbit.prevent="createCommand">
+      <form ref="form" @submit.prevent="createCommand">
         <div class="flex flex-col space-y-4 mb-4 w-2/5">
           <div class="flex flex-col">
             <label for="commandName">Command Name</label>
