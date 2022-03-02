@@ -1,13 +1,21 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, reactive } from "vue";
+import { addCommand } from "../api";
+import type { Command } from "../api";
 
-const form = ref(null);
+const form = ref<HTMLFormElement | null>(null);
 onMounted(() => {
-  form.value.reset();
+  form.value?.reset();
+});
+
+const formData = reactive<Command>({
+  name: "",
+  type: "",
+  response: "",
 });
 
 function createCommand() {
-  console.log("save triger");
+  addCommand(formData);
 }
 </script>
 
@@ -20,6 +28,7 @@ function createCommand() {
           <div class="flex flex-col">
             <label for="commandName">Command Name</label>
             <input
+              v-model="formData.name"
               class="dark:text-gray-700 dark:shadow-none rounded shadow p-2"
               id="commandName"
               type="text"
@@ -30,6 +39,7 @@ function createCommand() {
           <div class="flex flex-col">
             <label for="commandType">Command Type</label>
             <select
+              v-model="formData.type"
               id="commandType"
               class="dark:text-gray-700 dark:shadow-none rounded shadow p-2"
               required
@@ -42,6 +52,7 @@ function createCommand() {
           <div class="flex flex-col">
             <label for="commandResponse">Command Reponse</label>
             <textarea
+              v-model="formData.response"
               id="commandResponse"
               class="dark:text-gray-700 dark:shadow-none rounded shadow p-2"
               rows="4"

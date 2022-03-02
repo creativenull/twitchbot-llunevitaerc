@@ -1,21 +1,12 @@
 <script setup lang="ts">
-const tableData = [
-  {
-    name: "!dice",
-    type: "text",
-    reponse: "-",
-  },
-  {
-    name: "!roll",
-    type: "text",
-    reponse: "-",
-  },
-  {
-    name: "!drop",
-    type: "text",
-    reponse: "-",
-  },
-];
+import { onMounted, ref } from "vue";
+import { getCommands } from "../api";
+import type { Command } from "../api";
+
+const commands = ref<Command[]>([])
+onMounted(async () => {
+  commands.value = await getCommands();
+});
 </script>
 
 <template>
@@ -31,12 +22,12 @@ const tableData = [
           </tr>
         </thead>
         <tbody class="divide-y divide-solid">
-          <tr v-for="command in tableData" :key="command.name">
+          <tr v-for="command in commands" :key="command.name">
             <td class="py-2">
               <pre>{{ command.name }}</pre>
             </td>
             <td class="py-2">{{ command.type }}</td>
-            <td class="py-2">{{ command.reponse }}</td>
+            <td class="py-2">{{ command.response }}</td>
           </tr>
         </tbody>
       </table>
