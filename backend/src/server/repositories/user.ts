@@ -1,9 +1,5 @@
 import { db } from "../db.ts";
-
-interface UserModel {
-  id: number;
-  username: string;
-}
+import { UserResponse } from "../shared/user.ts"
 
 // cache the queries globally so they're kept between calls
 const readAllQuery = db.prepareQuery(`SELECT * FROM users;`);
@@ -11,12 +7,12 @@ const readUserQuery = db.prepareQuery(`SELECT * FROM users WHERE id = :id;`);
 
 export function queryAllUsers() {
   const usernames = readAllQuery.all();
-  const users: UserModel[] = [];
+  const users: UserResponse[] = [];
   for (const u of usernames) {
     users.push({
       id: u[0],
       username: u[1],
-    } as UserModel);
+    } as UserResponse);
   }
 
   return users;
@@ -32,7 +28,7 @@ export function readSingleUser(id: number) {
   return {
     id: row[0],
     username: row[1],
-  } as UserModel;
+  } as UserResponse;
 }
 
 export function updateSingleUser(id: number, username: string) {

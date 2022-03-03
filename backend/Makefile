@@ -16,6 +16,9 @@ server:
 		--watch \
 		src/server/index.ts
 
+update-shared:
+	cp -rfv ./src/server/shared ../frontend/src
+
 migrate-users: src/database/db.sqlite src/database/db.sqlite-journal
 	deno run \
 		--allow-read=.env,.env.example,.env.defaults,src/server/database/db.sqlite,src/server/database/db.sqlite-journal \
