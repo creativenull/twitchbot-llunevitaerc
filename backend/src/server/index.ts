@@ -13,7 +13,7 @@ app.use(oakCors())
 
 app.use(router.routes());
 
-app.use(async (ctx, next) => {
+app.use(async (_, next) => {
   try {
     await next();
   } catch (err) {

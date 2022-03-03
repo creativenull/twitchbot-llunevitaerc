@@ -1,10 +1,5 @@
 import { db } from "../db.ts";
 
-// interface QuestionModel {
-//   id: number;
-//   question: string;
-// }
-
 interface UserQuestionResult {
   username: string;
   question: string;
@@ -16,9 +11,9 @@ const query = db.prepareQuery(
 JOIN users ON questions.user_id = users.id;",
 );
 
-export function allQuestions() {
+export function queryAllQuestions() {
   const userQuestionRows = query.all();
-  let userQuestions: UserQuestionResult[] = [];
+  const userQuestions: UserQuestionResult[] = [];
 
   for (const uq of userQuestionRows) {
     userQuestions.push({

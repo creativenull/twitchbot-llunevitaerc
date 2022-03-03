@@ -1,15 +1,10 @@
 import { db } from "../db.ts";
+import { Command } from "../shared/command_interface.ts"
 
-export interface Command {
-  name: string;
-  type: string;
-  response: string;
-}
-
-export function getCommands(): Command[] {
+export function queryAllCommands(): Command[] {
   const q = db.prepareQuery("SELECT name,type,response FROM commands;");
   const res = q.all();
-  let commands: Command[] = [];
+  const commands: Command[] = [];
 
   for (const result of res) {
     commands.push({
@@ -30,7 +25,7 @@ function validateAdd(data: Command) {
   throw new Error("Invalid data");
 }
 
-export function addCommand(data: Command) {
+export function createSingleCommand(data: Command) {
   const validData = validateAdd(data)
   const insertQuery = db.prepareQuery(
     "INSERT INTO commands (name,type,response) VALUES (:name,:type,:response);",

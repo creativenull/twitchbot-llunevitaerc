@@ -9,9 +9,9 @@ interface UserModel {
 const readAllQuery = db.prepareQuery(`SELECT * FROM users;`);
 const readUserQuery = db.prepareQuery(`SELECT * FROM users WHERE id = :id;`);
 
-export function allUsers() {
+export function queryAllUsers() {
   const usernames = readAllQuery.all();
-  let users: UserModel[] = [];
+  const users: UserModel[] = [];
   for (const u of usernames) {
     users.push({
       id: u[0],
@@ -22,11 +22,11 @@ export function allUsers() {
   return users;
 }
 
-export function createUser(username: string) {
+export function createSingleUser(username: string) {
   db.query(`INSERT INTO users (username) VALUES (?);`, [username]);
 }
 
-export function readUser(id: number) {
+export function readSingleUser(id: number) {
   const row = readUserQuery.one({ id });
 
   return {
@@ -35,10 +35,10 @@ export function readUser(id: number) {
   } as UserModel;
 }
 
-export function updateUser(id: number, username: string) {
+export function updateSingleUser(id: number, username: string) {
   db.query(`UPDATE users SET username = ? WHERE id = ?;`, [username, id]);
 }
 
-export function deleteUser(id: number) {
+export function deleteSingleUser(id: number) {
   db.query(`DELETE FROM users WHERE id = ?;`, [id]);
 }

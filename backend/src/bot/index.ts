@@ -3,6 +3,6 @@ import { onMessageRecieved } from "./chatbot/message-handler.ts";
 
 try {
   client.addEventListener("message", onMessageRecieved);
-} catch (e) {
+} catch (_) {
   client.close();
 }
