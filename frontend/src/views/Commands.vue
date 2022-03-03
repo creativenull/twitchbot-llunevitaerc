@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { getCommands } from "../api";
-import type { Command } from "../api";
+import type { CommandResponse } from "../shared/command";
+import { useResponseApi } from "../composables/api";
+import * as api from "../api";
 
-const commands = ref<Command[]>([])
-onMounted(async () => {
-  commands.value = await getCommands();
-});
+const { response: commands } = useResponseApi<CommandResponse[]>(api.GetCommands);
 </script>
 
 <template>

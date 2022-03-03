@@ -1,21 +1,29 @@
 <script setup lang="ts">
 import { onMounted, ref, reactive } from "vue";
-import { addCommand } from "../api";
-import type { Command } from "../api";
+import type { CommandResponse } from "../shared/command";
+import { useRequestApi } from "../composables/api";
+import * as api from "../api";
 
 const form = ref<HTMLFormElement | null>(null);
-onMounted(() => {
+function resetForm() {
   form.value?.reset();
+}
+
+onMounted(() => {
+  resetForm();
 });
 
-const formData = reactive<Command>({
+const formData = reactive<CommandResponse>({
   name: "",
   type: "",
   response: "",
 });
 
 function createCommand() {
-  addCommand(formData);
+  const { response, ok } = useRequestApi<{ success: boolean }, CommandResponse>(api.AddCommand, formData);
+  if (ok) {
+    resetForm();
+  }
 }
 </script>
 
@@ -44,8 +52,7 @@ function createCommand() {
               class="dark:text-gray-700 dark:shadow-none rounded shadow p-2"
               required
             >
-              <option value="none" selected>None</option>
-              <option value="text">Text</option>
+              <option value="text" selected>Text</option>
             </select>
           </div>
 
