@@ -1,76 +1,58 @@
 import { ref } from "vue";
 
-export function useApi<T>(url: string, body?: string, method = "GET") {
-  const response = ref<T>();
-  const error = ref(null);
-  const ok = ref(false);
-  const headers = {
-    accept: "application/json",
-    "content-type": "application/json",
-  };
-
-  fetch(url, {
-    method,
-    headers,
-    body: JSON.stringify(body),
-  })
-    .then((res) => {
-      ok.value = res.ok;
-      return res.json() as Promise<T>;
-    })
-    .then((json) => (response.value = json as T))
-    .catch((err) => (error.value = err));
-
-  return { response, error, ok };
-}
-
-export function useRequestApi<T, R>(
+export async function useApi<Req, Res>(
   url: string,
-  body: R | undefined,
-  method = "POST"
+  body?: Req | undefined,
+  method = "GET"
 ) {
-  const response = ref<T>();
-  const error = ref(null);
+  const response = ref<Res>();
+  const error = ref<string>("");
   const ok = ref(false);
   const headers = {
     accept: "application/json",
     "content-type": "application/json",
   };
 
-  fetch(url, {
-    method,
-    headers,
-    body: JSON.stringify(body),
-  })
-    .then((res) => {
-      ok.value = res.ok;
-      return res.json() as Promise<T>;
-    })
-    .then((json) => (response.value = json as T))
-    .catch((err) => (error.value = err));
+  try {
+    const res = await fetch(url, {
+      method,
+      headers,
+      body: JSON.stringify(body),
+    });
 
-  return { response, error, ok };
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(await res.text());
+    }
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch!");
+    }
+
+    ok.value = res.ok;
+    response.value = (await res.json()) as Res;
+
+    return { response, error, ok };
+  } catch (err) {
+    if (err instanceof Error) {
+      error.value = err.message;
+    } else {
+      error.value = "Oops, something went wrong!";
+    }
+
+    return { response, error, ok };
+  }
 }
 
-export function useResponseApi<T>(url: string, method = "GET") {
-  const response = ref<T>();
-  const error = ref(null);
-  const ok = ref(false);
-  const headers = {
-    accept: "application/json",
-    "content-type": "application/json",
-  };
+export async function useGetRequest<Req, Res>(
+  url: string,
+  body?: Req | undefined
+) {
+  return await useApi<Res, Req>(url, body, "GET");
+}
 
-  fetch(url, {
-    method,
-    headers,
-  })
-    .then((res) => {
-      ok.value = res.ok;
-      return res.json() as Promise<T>;
-    })
-    .then((json) => (response.value = json as T))
-    .catch((err) => (error.value = err));
-
-  return { response, error, ok };
+export async function usePostRequest<Req, Res>(
+  url: string,
+  body?: Req | undefined
+) {
+  return await useApi<Res, Req>(url, body, "POST");
 }

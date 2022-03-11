@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import type { CommandResponse } from "../shared/command";
-import { useResponseApi } from "../composables/api";
+import { useGetRequest } from "../composables/api";
 import * as api from "../api";
 
-const { response: commands } = useResponseApi<CommandResponse[]>(api.GetCommands);
+const commands = ref<CommandResponse[]>()
+onMounted(async () => {
+  const { response } = await useGetRequest<undefined, CommandResponse[]>(api.GetCommands);
+  commands.value = response.value
+})
 </script>
 
 <template>

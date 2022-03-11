@@ -1,28 +1,37 @@
 <script setup lang="ts">
 import { onMounted, ref, reactive } from "vue";
 import type { CommandResponse } from "../shared/command";
-import { useRequestApi } from "../composables/api";
+import { usePostRequest } from "../composables/api";
 import * as api from "../api";
 
 const form = ref<HTMLFormElement | null>(null);
-function resetForm() {
-  form.value?.reset();
-}
-
-onMounted(() => {
-  resetForm();
-});
-
 const formData = reactive<CommandResponse>({
   name: "",
   type: "",
   response: "",
 });
 
-function createCommand() {
-  const { response, ok } = useRequestApi<{ success: boolean }, CommandResponse>(api.AddCommand, formData);
-  if (ok) {
+function resetForm() {
+  form.value?.reset();
+  formData.name = "";
+  formData.type = "";
+  formData.response = "";
+}
+
+onMounted(() => {
+  resetForm();
+});
+
+async function createCommand() {
+  const { ok } = await usePostRequest<CommandResponse, unknown>(
+    api.AddCommand,
+    formData
+  );
+  if (ok.value) {
     resetForm();
+    alert("Successfully added command");
+  } else {
+    alert("Failed to add command, maybe it already exists");
   }
 }
 </script>
