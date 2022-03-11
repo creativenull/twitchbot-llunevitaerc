@@ -3,5 +3,13 @@
     "allowJs": true,
     "lib": ["deno.window"],
     "strict": true
+  },
+  "fmt": {
+    "files": {
+      "include": ["src/"]
+    },
+    "options": {
+      "lineWidth": 120
+    }
   }
 }
