@@ -1,12 +1,6 @@
 import { Context } from "https://deno.land/x/oak@v10.1.0/mod.ts";
-import {
-  respondWithError,
-  respondWithNotFound,
-} from "../utils/handlers/error_handler.ts";
-import {
-  createSingleCommand,
-  queryAllCommands,
-} from "../repositories/command.ts";
+import { respondWithError, respondWithNotFound } from "../utils/handlers/error_handler.ts";
+import { createSingleCommand, queryAllCommands } from "../repositories/command.ts";
 
 export function getCommands(ctx: Context) {
   try {

@@ -1,4 +1,4 @@
 .env
-src/database/*.sqlite*
+src/server/database/*.sqlite*
 src/utils/logs
 *vimrc*

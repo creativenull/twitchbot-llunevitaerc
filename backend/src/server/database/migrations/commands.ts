@@ -7,7 +7,7 @@ const db = new DB(env.DATABASE_NAME);
 db.query(`
   CREATE TABLE IF NOT EXISTS commands (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    name        TEXT,
+    name        TEXT UNIQUE,
     type        TEXT,
     response    TEXT
   );

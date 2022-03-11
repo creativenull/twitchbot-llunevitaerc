@@ -14,9 +14,15 @@ export function getUsers(ctx: Context) {
   }
 }
 
-export function getSingleUser(ctx: Context) {
+interface UserParams {
+  params?: {
+    id?: string;
+  };
+}
+
+export function getSingleUser(ctx: Context & UserParams) {
   try {
-    const id = ctx.request.url.searchParams.get("id") ?? "";
+    const id = ctx.params?.id as string;
     const user = readSingleUser(parseInt(id));
     ctx.response.body = user;
   } catch (e) {
