@@ -1,8 +1,9 @@
-.PHONY: bot clean migrate-users
+.PHONY: bot clean clean-db migrate-users
 
 bot:
 	deno run \
-		--allow-read=.env,.env.example,.env.defaults,/etc/alpine-release \
+		--allow-read=.env,.env.example,.env.defaults,/etc/alpine-release,src/server/database/db.sqlite,src/server/database/db.sqlite-journal \
+		--allow-write=src/server/database/db.sqlite,src/server/database/db.sqlite-journal,src/utils/logs \
 		--allow-env \
 		--allow-net \
 		src/bot/index.ts
@@ -19,7 +20,7 @@ server:
 update-shared:
 	cp -rfv ./src/server/shared ../frontend/src
 
-migrate-users: src/database/db.sqlite src/database/db.sqlite-journal
+migrate-users: src/server/database/db.sqlite src/server/database/db.sqlite-journal
 	deno run \
 		--allow-read=.env,.env.example,.env.defaults,src/server/database/db.sqlite,src/server/database/db.sqlite-journal \
 		--allow-write=src/server/database/db.sqlite,src/server/database/db.sqlite-journal \
@@ -47,4 +48,8 @@ src/server/database/db.sqlite:
 	touch src/server/database/db.sqlite
 
 src/server/database/db.sqlite-journal:
-	touch src/database/db.sqlite-journal
+	touch src/server/database/db.sqlite-journal
+
+clean-db:
+	rm src/server/database/db.sqlite
+	@echo "Database cleaned!"
